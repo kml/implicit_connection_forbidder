@@ -1,0 +1,17 @@
+PATH
+  remote: .
+  specs:
+    implicit_connection_forbidder (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    rake (10.2.2)
+
+PLATFORMS
+  java
+
+DEPENDENCIES
+  bundler (~> 1.5)
+  implicit_connection_forbidder!
+  rake
