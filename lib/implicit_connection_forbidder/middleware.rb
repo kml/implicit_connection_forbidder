@@ -2,14 +2,12 @@
 
 module ImplicitConnectionForbidder
   class Middleware
-    include ImplicitConnectionForbidder::Base
-
     def initialize(app)
       @app = app
     end
 
     def call(env)
-      with_forbidden_implicit_connections do
+      ImplicitConnectionForbidder.forbid_implicit_connections do
         @app.call(env)
       end
     end
