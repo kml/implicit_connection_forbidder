@@ -25,7 +25,7 @@ module ImplicitConnectionForbidder
       ensure
         Thread.current[:active_record_forbid_implicit_connections] = old_value
 
-        if Thread.current[:active_record_forbid_implicit_connections] == true
+        if Thread.current[:active_record_forbid_implicit_connections] == true && Thread.current[:active_record_fresh_connection] != true
           ::ActiveRecord::Base.connection_pool.release_connection
         end
       end
