@@ -49,6 +49,12 @@ Or install it yourself as:
 
     $ gem install implicit_connection_forbidder
 
+Add require statements (ex. config/initializers/implicit_connection_forbidder.rb)
+
+    require 'implicit_connection_forbidder'
+    require 'implicit_connection_forbidder/core_ext/kernel'
+    require 'implicit_connection_forbidder/ext/action_controller/base'
+
 ## Inspiration
 
 https://gist.github.com/jrochkind/1364551/raw/4922663a26568087d5a24b25a46ba426df98a36e/gistfile1.rb
