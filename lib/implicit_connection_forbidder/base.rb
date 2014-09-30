@@ -3,7 +3,11 @@
 module ImplicitConnectionForbidder
   module Base
     def forbid_implicit_connections
-      ::ActiveRecord::Base.connection_pool.release_connection
+      begin
+        ::ActiveRecord::Base.connection_pool.release_connection
+      rescue ActiveRecord::ConnectionNotEstablished
+      end
+
       old_value = Thread.current[:active_record_forbid_implicit_connections]
       Thread.current[:active_record_forbid_implicit_connections] = true
       return unless block_given?
