@@ -1,5 +1,7 @@
 # ImplicitConnectionForbidder
 
+ActiveRecord::ConnectionTimeoutError: could not obtain a database connection within 30 seconds (waited 30.0 seconds). The max pool size is currently 1; consider increasing it.
+
 Patch pomaga wykryć wywołania modeli AR, które nie znajdują się wewnątrz bloku with_connection
 i rzuca dla nich wyjątek.
 W przypadku akcji, gdzie na początku pobierany jest model AR,
