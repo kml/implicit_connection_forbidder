@@ -36,25 +36,15 @@ In other case querying the database will be executed after with_connection block
 
 Add this line to your application's Gemfile:
 
-    gem 'implicit_connection_forbidder', git: 'git://github.com/kml/implicit_connection_forbidder.git'
-
-And then execute:
-
-    $ bundle install
-
-Add require statements (ex. config/initializers/implicit_connection_forbidder.rb)
-
-    require 'implicit_connection_forbidder'
-    require 'implicit_connection_forbidder/core_ext/kernel'
-    require 'implicit_connection_forbidder/ext/action_controller/base'
-
-Or inside Gemfile:
-
     gem 'implicit_connection_forbidder', git: 'git://github.com/kml/implicit_connection_forbidder.git', require: [
       'implicit_connection_forbidder',
       'implicit_connection_forbidder/core_ext/kernel',
       'implicit_connection_forbidder/ext/action_controller/base'
     ]
+
+And then execute:
+
+    $ bundle install
 
 ## Inspiration
 
