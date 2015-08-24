@@ -41,21 +41,25 @@ Jako middleware:
 
 Add this line to your application's Gemfile:
 
-    gem 'implicit_connection_forbidder'
+    gem 'implicit_connection_forbidder', git: 'git://github.com/kml/implicit_connection_forbidder.git'
 
 And then execute:
 
     $ bundle install
-
-Or install it yourself as:
-
-    $ gem install implicit_connection_forbidder
 
 Add require statements (ex. config/initializers/implicit_connection_forbidder.rb)
 
     require 'implicit_connection_forbidder'
     require 'implicit_connection_forbidder/core_ext/kernel'
     require 'implicit_connection_forbidder/ext/action_controller/base'
+
+Or inside Gemfile:
+
+    gem 'implicit_connection_forbidder', git: 'git://github.com/kml/implicit_connection_forbidder.git', require: [
+      'implicit_connection_forbidder',
+      'implicit_connection_forbidder/core_ext/kernel',
+      'implicit_connection_forbidder/ext/action_controller/base'
+    ]
 
 ## Inspiration
 
