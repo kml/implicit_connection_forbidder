@@ -1,41 +1,36 @@
 # ImplicitConnectionForbidder
 
-ActiveRecord::ConnectionTimeoutError: could not obtain a database connection within 30 seconds (waited 30.0 seconds). The max pool size is currently 1; consider increasing it.
+ActiveRecord::ConnectionTimeoutError: could not obtain a database connection within 30 seconds (waited 30.0 seconds).
+The max pool size is currently 1; consider increasing it.
 
-Patch pomaga wykryć wywołania modeli AR, które nie znajdują się wewnątrz bloku with_connection
-i rzuca dla nich wyjątek.
-W przypadku akcji, gdzie na początku pobierany jest model AR,
-następnie wykonywane są inne akcje (np. odpytania mongo, generowanie odpowiedzi)
-można oddać połączenie do puli, aby inne akcje z niego korzystały.
+This gem helps to detect calls of AR models, which are not within explicit with_connection block.
+In those cases it throws an exception.
+It's especially helpfull in the case where at the beginning of action AR model is selected from DB
+and then other actions are performed that do not need DB (eg. querying mongo, generating JSON response, ...).
+You can give back connection to the pool so other threads can use it.
 
-Szczególnie przydatny w środowisku development i test.
+Following block of code will raise an exception because of implicit AR connection:
 
-Poniższy blok rzuci wyjątkiem:
-
-    Shop.first
-
-Zapis wewnątrz with_connection działa bezproblemowo:
-
-    ActiveRecord::Base.connection_pool.with_connection do
-      Shop.first
+    ImplicitConnectionForbidder.forbid_implicit_connections do
+      User.first
     end
 
-Uwaga: Jeśli pracujemy z relacją należy zakończyć ją wywołaniem to_a,
-inaczej próba komunikacji z bazą wystąpi poza blokiem with_connection!
+When using explicit connection (with_connection) it works fine:
 
-    ActiveRecord::Base.connection_pool.with_connection do
-      @shops = Shop.all.to_a
+    ImplicitConnectionForbidder.forbid_implicit_connections do
+      ActiveRecord::Base.connection_pool.with_connection do
+        User.first
+      end
     end
 
-Patch podpinamy w kontrolerze dodając odpowiednie filtry.
+Warning: When working with relation it is required to finish it with call to to_a.
+In other case querying the database will be executed after with_connection block!
 
-    class ApplicationController < ActionController::Base
-      include ImplicitConnectionForbidder::ActionController
+    ImplicitConnectionForbidder.forbid_implicit_connections do
+      ActiveRecord::Base.connection_pool.with_connection do
+        @users = User.all.to_a
+      end
     end
-
-Jako middleware:
-
-    Rails.application.middleware.use ImplicitConnectionForbidder::Middleware
 
 ## Installation
 
